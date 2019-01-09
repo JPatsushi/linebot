@@ -50,25 +50,58 @@ class KamigoController < ApplicationController
   end
 
   def webhook
-    # Line Bot API 物件初始化
-    client = Line::Bot::Client.new { |config|
+
+    # 設定回覆文字
+    reply_text = keyword_reply(received_text)
+
+    # 傳送訊息
+    response = reply_to_line(reply_text)
+      
+    # 回應 200
+    head :ok
+  end
+  
+  # Line Bot API 物件初始化
+  def line
+    @line ||= Line::Bot::Client.new { |config|
       config.channel_secret = '846a3b405ea4207f3906d04dcddf9804'
       config.channel_token = 'G4VJA8bWIrkK20HSL0qqgOn/+nULIQzZkaqzX+WR0K+Y3lF+6tsGaRc3cy7JcPENj6Vp6F0QAaJ0qDlhR4omVNCYd2I/9DNqajmwmysBYiFSyBZC1qEyo2Wxx1ZZ60t1U5e1zOo59vSIWMLYT2hxhwdB04t89/1O/w1cDnyilFU='
     }
-    
+  end
+
+  # 傳送訊息到 line
+  def reply_to_line(reply_text)
+    return nil if reply_text.nil?
     # 取得 reply token
     reply_token = params['events'][0]['replyToken']
 
     # 設定回覆訊息
     message = {
       type: 'text',
-      text: '好哦～好哦～'
+      text: reply_text
     }
-
+    
     # 傳送訊息
-    response = client.reply_message(reply_token, message)
-      
-    # 回應 200
-    head :ok
+    line.reply_message(reply_token, message)
   end
+
+  # 取得對方說的話
+  def received_text
+    message = params['events'][0]['message']
+    message['text'] unless message.nil?
+  end
+
+  # 關鍵字回覆
+  def keyword_reply(received_text)
+    # 學習紀錄表
+    keyword_mapping = {
+      'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
+      '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
+    }
+    
+    # 查表
+    keyword_mapping[received_text]
+  end
+
+
 end
