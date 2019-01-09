@@ -45,4 +45,8 @@ class KamigoController < ApplicationController
   def translate_to_korean(message)
     "#{message}油~"
   end
+
+  def webhook
+    head :ok
+  end
 end
