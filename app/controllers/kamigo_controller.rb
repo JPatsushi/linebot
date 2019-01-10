@@ -50,9 +50,11 @@ class KamigoController < ApplicationController
   end
 
   def webhook
+    # 學說話
+    reply_text = learn(received_text)
 
-    # 設定回覆文字
-    reply_text = keyword_reply(received_text)
+    # 關鍵字回覆
+    reply_text = keyword_reply(received_text) if reply_text.nil?
 
     # 傳送訊息
     response = reply_to_line(reply_text)
@@ -93,15 +95,25 @@ class KamigoController < ApplicationController
 
   # 關鍵字回覆
   def keyword_reply(received_text)
-    # 學習紀錄表
-    keyword_mapping = {
-      'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
-      '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
-    }
-    
-    # 查表
-    keyword_mapping[received_text]
+    #前面是nil，後面就不作
+    KeywordMapping.where(keyword: received_text).last&.message
   end
 
+  def learn(received_text)
+    #如果開頭不是 卡米狗學說話; 就跳出
+    return nil unless received_text[0..6] == '卡米狗學說話;'
+
+    received_text = received_text[7..-1]
+    semicolon_index = received_text.index(';')
+
+    # 找不到分號就跳出
+    return nil if semicolon_index.nil?
+
+    keyword = received_text[0..semicolon_index-1]
+    message = received_text[semicolon_index+1..-1]
+
+    KeywordMapping.create(keyword: keyword, message: message)
+    '好哦～好哦～'
+  end
 
 end
