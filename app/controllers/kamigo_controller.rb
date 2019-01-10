@@ -2,6 +2,23 @@ class KamigoController < ApplicationController
 
   require 'line/bot'
 
+  def example
+    # uri = URI('http://www.example.com/todo.cgi')
+    # req = Net::HTTP::Post.new(uri)
+    # req.set_form_data('from' => '2005-01-01', 'to' => '2005-03-31')
+    # res = Net::HTTP.new(uri.host, uri.port).request(req)
+    
+    # json = JSON.parse(res.read_body)
+
+    # uri = URI('https://www.cwb.gov.tw/V7/js/HDRadar_1000_n_val.js')
+    # response = Net::HTTP.get(uri)
+    # start_index = response.index('","') + 3
+    # end_index = response.index('"),') - 1
+    # "https://www.cwb.gov.tw" + response[start_index..end_index]
+    upload_to_imgur("https://www.cwb.gov.tw/V7/observe/radar/Data/HD_Radar/CV1_1000_201901110340.png")
+    # render plain: "#{response[start_index..end_index]}"
+  end
+
   def eat
     render plain: "吃土啦"
   end
@@ -179,7 +196,8 @@ class KamigoController < ApplicationController
 
   def get_weather(received_text)
     return nil unless received_text.include? '天気'
-    upload_to_imgur(get_weather_from_cwb)
+    # upload_to_imgur(get_weather_from_cwb)
+    get_weather_from_cwb
   end
 
   def get_weather_from_cwb

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :keyword_mappings
 
   resources :push_messages, only: [:new, :create]
+
+  get '/kamigo/example', to: 'kamigo#example'
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get '/kamigo/eat', to: 'kamigo#eat'
