@@ -4,8 +4,8 @@ class GuestsCleanupJob < ApplicationJob
 
   def perform(*args)
     # Do something later
-    # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
-    GuestsCleanupJob.delay.perform_later(push_job)
+    push_job
+    # puts "ジョブが実行されたよ！＼(^o^)／"
   end
   
   def push_job
