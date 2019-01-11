@@ -2,6 +2,11 @@ require 'line/bot'
 class PushMessagesController < ApplicationController
   before_action :authenticate_user!
 
+  def example
+    GuestsCleanupJob.delay.perform_now
+    redirect_to :new
+  end
+
   # GET /push_messages/new
   def new
   end
