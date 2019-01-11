@@ -107,8 +107,8 @@ class KamigoController < ApplicationController
   # Line Bot API 物件初始化
   def line
     @line ||= Line::Bot::Client.new { |config|
-      config.channel_secret = '846a3b405ea4207f3906d04dcddf9804'
-      config.channel_token = 'G4VJA8bWIrkK20HSL0qqgOn/+nULIQzZkaqzX+WR0K+Y3lF+6tsGaRc3cy7JcPENj6Vp6F0QAaJ0qDlhR4omVNCYd2I/9DNqajmwmysBYiFSyBZC1qEyo2Wxx1ZZ60t1U5e1zOo59vSIWMLYT2hxhwdB04t89/1O/w1cDnyilFU='
+      config.channel_secret = ENV['LINE_SECRET']
+      config.channel_token = ENV['LINE_TOKEN']
     }
   end
 
@@ -213,7 +213,7 @@ class KamigoController < ApplicationController
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(url)
-    request["authorization"] = 'Client-ID 3cea96eaba1ae01'
+    request["authorization"] = 'Client-ID' + ENV['IMGUR']
 
     request.set_form_data({"image" => image_url})
     response = http.request(request)
