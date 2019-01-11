@@ -1,10 +1,11 @@
 class GuestsCleanupJob < ApplicationJob
+  #self.queue_adapter = :delayed_job
   queue_as :default
 
   def perform(*args)
     # Do something later
     # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
-    GuestsCleanupJob.delay.perform_later push_job
+    GuestsCleanupJob.delay.set(wait: 3.seconds).perform_later push_job
   end
   
   def push_job
