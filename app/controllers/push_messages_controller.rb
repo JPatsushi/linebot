@@ -3,8 +3,8 @@ class PushMessagesController < ApplicationController
   before_action :authenticate_user!
 
   def example
-    GuestsCleanupJob.delay.perform_now
-    redirect_to :new
+    GuestsCleanupJob.perform_later 1,2,3
+    redirect_to new_push_message_path
   end
 
   # GET /push_messages/new
