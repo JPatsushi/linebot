@@ -4,7 +4,7 @@ class PushMessagesController < ApplicationController
 
   def example
     # Ourworker.perform_async('easy')
-    GuestsCleanupJob.perform_later('hard')
+    GuestsCleanupJob.set(wait: 20.seconds).perform_later('line')
     redirect_to new_push_message_path
   end
 
