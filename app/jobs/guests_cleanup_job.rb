@@ -1,9 +1,9 @@
 class GuestsCleanupJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(text)
     # Do something later
-    push_job
+    Ourworker.perform_async(text)
     # puts "ジョブが実行されたよ！＼(^o^)／"
   end
   
