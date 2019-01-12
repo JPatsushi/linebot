@@ -17,4 +17,9 @@ Rails.application.routes.draw do
   get '/kamigo/sent_request', to: 'kamigo#sent_request'
 
   post '/kamigo/webhook', to: 'kamigo#webhook'
+
+  require 'sidekiq/web'
+    authenticate :user, lambda { |u| u.admin? } do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 end

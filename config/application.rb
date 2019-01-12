@@ -9,10 +9,10 @@ Bundler.require(*Rails.groups)
 module Sample
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.active_job.queue_name_prefix = Rails.env
+    # config.active_job.queue_name_prefix = Rails.env
     
     config.load_defaults 5.1
-    config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :sidekiq
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

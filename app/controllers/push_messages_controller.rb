@@ -3,7 +3,7 @@ class PushMessagesController < ApplicationController
   before_action :authenticate_user!
 
   def example
-    GuestsCleanupJob.perform_later 1,2,3
+    Ourworker.perform_async('easy')
     redirect_to new_push_message_path
   end
 
