@@ -22,5 +22,5 @@
 
 .byebug_history
 
-/.env
+.env
 .env.production
